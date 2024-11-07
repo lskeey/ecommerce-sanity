@@ -4,6 +4,7 @@ import "../globals.css";
 
 import { ClerkProvider } from '@clerk/nextjs'
 import Header from "@/components/header";
+import { SanityLive } from "@/sanity/lib/live";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -34,6 +35,8 @@ export default function RootLayout({
           <main className="container mx-auto max-w-5xl">
             {children}
           </main>
+
+          <SanityLive />
         </body>
       </html>
     </ClerkProvider>
