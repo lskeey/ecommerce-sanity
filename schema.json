@@ -374,6 +374,13 @@
         },
         "optional": true
       },
+      "discountAmount": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "couponCode": {
         "type": "objectAttribute",
         "value": {
@@ -381,7 +388,7 @@
         },
         "optional": true
       },
-      "validForm": {
+      "validFrom": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
