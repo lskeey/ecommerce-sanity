@@ -18,6 +18,12 @@ export const saleType = defineType({
       title: "Sale Description",
     }),
     defineField({
+      name: "discountAmount",
+      type: "number",
+      title: "Discount Amount",
+      description: "Amount off in the percentage or fixed value",
+    }),
+    defineField({
       name: "couponCode",
       type: "string",
       title: "Coupon Code",
