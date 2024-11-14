@@ -22,9 +22,12 @@ export default async function SearchPage({
   }
 
   return (
-    <div>
-      <h1>Search results for {query}</h1>
-      <ProductGrid products={products} />
+    <div className="flex gap-4">
+      <div className="w-1/4 border shadow-md rounded-md p-4">Filter</div>
+      <div className="flex-1 border shadow-md rounded-md p-4">
+        <h1>Search results for {query}</h1>
+        <ProductGrid products={products} />
+      </div>
     </div>
   )
 }
