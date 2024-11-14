@@ -25,7 +25,7 @@ export default function Header() {
       </Form>
 
       <div className="flex gap-2 items-center">
-        <Button size="sm" className="rounded-sm">
+        <Button size="sm" variant={"outline"} className="rounded-sm">
           <Link href="/cart" className="flex gap-1">
             <IoCartOutline className="w-6 h-6" />
             <span className="hidden md:block">My Cart</span>
