@@ -7,8 +7,8 @@ import { CategorySelector } from "../categories/category-selector";
 
 const ProductGrid = ({ products , categories }: { products: Product[], categories: Category[]}) => {
   return (
-    <>
-      <div className="mt-4">
+    <div>
+      <div className="text-end mt-4">
         <CategorySelector categories={categories} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
@@ -22,7 +22,7 @@ const ProductGrid = ({ products , categories }: { products: Product[], categorie
           )
         })}
       </div>
-    </>
+    </div>
   )
 }
 
