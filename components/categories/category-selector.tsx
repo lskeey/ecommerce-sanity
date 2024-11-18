@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/popover";
 import { Category } from "@/sanity.types"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface CategorySelectorProps {
   categories: Category[];
@@ -27,6 +28,7 @@ interface CategorySelectorProps {
 export function CategorySelector({ categories }: CategorySelectorProps) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState<string>("")
+  const router = useRouter();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,7 +47,23 @@ export function CategorySelector({ categories }: CategorySelectorProps) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search category" className="h-9" />
+          <CommandInput
+            placeholder="Search category"
+            className="h-9"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const selectedCategory = categories.find((category) => 
+                  category.title?.toLowerCase().includes(e.currentTarget.value.toLowerCase())
+                );
+                
+                if (selectedCategory?.slug?.current) {
+                  setValue(selectedCategory._id);
+                  router.push(`/categories/${selectedCategory.slug.current}`);
+                  setOpen(false);
+                }
+              }
+            }}
+          />
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
@@ -55,6 +73,7 @@ export function CategorySelector({ categories }: CategorySelectorProps) {
                   value={category._id}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
+                    router.push(`/categories/${category.slug?.current}`);
                     setOpen(false)
                   }}
                 >
