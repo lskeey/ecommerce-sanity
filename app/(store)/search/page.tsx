@@ -1,4 +1,5 @@
 import ProductGrid from "@/components/products/product-grid";
+import { getAllCategories } from "@/sanity/lib/products/getAllCategories";
 import { searchProductByName } from "@/sanity/lib/products/searchProductsByName";
 
 export default async function SearchPage({
@@ -11,6 +12,7 @@ export default async function SearchPage({
   const { query } = await searchParams;
 
   const products = await searchProductByName(query);
+  const categories = await getAllCategories();
 
   if (!products.length) {
     return (
@@ -26,7 +28,7 @@ export default async function SearchPage({
       <div className="w-1/4 border shadow-md rounded-md p-4">Filter</div>
       <div className="flex-1 border shadow-md rounded-md p-4">
         <h1>Search results for {query}</h1>
-        <ProductGrid products={products} />
+        <ProductGrid products={products} categories={categories}/>
       </div>
     </div>
   )
