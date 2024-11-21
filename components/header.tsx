@@ -10,12 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { ClerkLoaded, SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import useBasketStore from "@/store/store";
+import useCartStore from "@/store/store";
 
 export default function Header() {
   const { user } = useUser();
 
-  const itemCount = useBasketStore((state) =>
+  const itemCount = useCartStore((state) =>
     state.items.reduce((total, item) => total + item.quantity, 0)
   );
 
