@@ -7,8 +7,8 @@ const ProductCard = ({ product }: { product: Product }) => {
   const isOutOfStock = product.stock != null && product.stock <= 0;
 
   return (
-    <Link href={`/product/${product.slug?.current}`}>
-      <div className="relative flex flex-col overflow-hidden rounded-md shadow-md border">
+    <Link href={`/product/${product.slug?.current}`} className="h-full">
+      <div className="relative flex flex-col overflow-hidden rounded-md shadow-md border h-full">
         <div className="relative aspect-square w-full h-full">
           {product.image ? (
             <Image
@@ -31,7 +31,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <span className="text-white">Out of Stock</span>
           </div>
         )}
-        <div className="space-y-1 px-2 pt-2 pb-4">
+        <div className="space-y-1 px-2 pt-2 pb-4 h-full">
           <div className="text-sm line-clamp-2">{product.name}</div>
           <div className="text-md font-bold">${product.price}</div>
         </div>
