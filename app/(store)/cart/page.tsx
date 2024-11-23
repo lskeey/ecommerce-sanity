@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import useCartStore from "@/store/store";
 import { IoCartOutline } from "react-icons/io5";
+import { FaImage } from "react-icons/fa6";
 import { SignInButton, SignUpButton, useAuth, useUser } from "@clerk/clerk-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -70,42 +71,47 @@ const CartPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 lg:grid lg:grid-cols-4 gap-8">
+    <div className="container mx-auto max-w-7xl px-4 lg:grid lg:grid-cols-4 gap-8">
       <div className="col-span-3 space-y-2">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-800">Your Cart</h1>
-          <span className="text-sm text-gray-500">Price</span>
+          <h1 className="text-md font-bold">Cart</h1>
+          <span className="text-xs text-gray-500">Price</span>
         </div>
+
         <hr />
+
         <div className="flex flex-col divide-y">
           {groupedItems.map((item) => {
             const itemCount = getItemCount(item.product._id);
-
+            
             return (
-              <div key={item.product._id} className="flex justify-between gap-6 py-3">
+              <div key={item.product._id} className="flex justify-between gap-4 py-3">
                 {/* Product Image */}
-                <div className="flex items-center justify-center aspect-square w-16 h-16 lg:w-32 lg:h-32">
-                  {item.product.image ? (
-                    <Image
-                      src={imageUrl(item.product.image).url()}
-                      alt={`Image of ${item.product.name}`}
-                      width={500}
-                      height={500}
-                      style={{ objectFit: "contain" }}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center w-full h-full bg-gray-200">
-                      <span>No Image Available</span>
-                    </div>
-                  )}
-                </div>
+                <Link href={item.product.slug ? `/product/${item.product.slug.current}` : "/"}>
+                  <div className="flex items-center justify-center aspect-square w-24 h-24 lg:w-32 lg:h-32 rounded-md shadow-md overflow-hidden hover:cursor-pointer">
+                    {item.product.image ? (
+                      <Image
+                        src={imageUrl(item.product.image).url()}
+                        alt={`${item.product.name} image`}
+                        width={500}
+                        height={500}
+                        style={{ objectFit: "contain" }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-gray-200 gap-2 text-center">
+                        <FaImage className="w-8 h-8 text-gray-400" />
+                        <span className="text-xs text-gray-400">No Image Available</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
 
                 {/* Product Details */}
                 <div className="flex-1 flex flex-col">
-                  <span className="text-sm lg:text-md mb-1">{item.product.name}</span>
-                  {/* Stock Information */}
-                  <div className="w-full text-xs mb-2">
-                    Total Stock:
+                  <Link href={item.product.slug ? `/product/${item.product.slug.current}` : "/"} className="text-sm lg:text-md mb-1 hover:underline">{item.product.name}</Link>
+
+                  <div className="w-full text-xs lg:text-sm mb-2">
+                    <span className="font-semibold">Total stock:</span>
                     <span
                       className={`${
                         item.product.stock !== undefined && item.product.stock < 30
@@ -116,44 +122,45 @@ const CartPage = () => {
                       {item.product.stock ?? "N/A"}
                     </span>
                   </div>
+
                   <div className="flex items-center space-x-4">
-                    {/* Quantity Control */}
-                    <div className="flex items-center justify-between border rounded-md p-1 gap-2">
+                    <div className="grid grid-cols-3 items-center text-center border rounded-md p-[2px]">
                       <button
                         onClick={() => removeItem(item.product._id)}
-                        className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100"
+                        className="w-4 h-4 lg:w-6 lg:h-6 flex items-center justify-center rounded-md hover:bg-gray-100"
                       >
-                        <span className={`text-xl ${itemCount === 0 ? "text-gray-400" : "text-black"}`}>-</span>
+                        <span className={`text-lg lg:text-xl ${itemCount === 0 ? "text-gray-400" : "text-black"}`}>-</span>
                       </button>
-                      <span>{itemCount}</span>
+                      <span className="text-sm">{itemCount}</span>
                       <button
                         onClick={() => addItem(item.product)}
                         disabled={itemCount === item.product.stock}
-                        className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-100"
+                        className="w-4 h-4 lg:w-6 lg:h-6 flex items-center justify-center rounded-md hover:bg-gray-100"
                       >
-                        <span className={`text-xl ${itemCount === item.product.stock ? "text-gray-400" : "text-black"}`}>+</span>
+                        <span className={`text-lg lg:text-xl ${itemCount === item.product.stock ? "text-gray-400" : "text-black"}`}>+</span>
                       </button>
                     </div>
                   </div>
                 </div>
 
                 {/* Product Price */}
-                <div className="text-end font-bold">${((item.product.price ?? 0) * item.quantity).toFixed(2)}</div>
+                <div className="text-end text-sm lg:text-md font-bold">${((item.product.price ?? 0) * item.quantity).toFixed(2)}</div>
               </div>
             );
           })}
         </div>
       </div>
-      <div className="w-full lg:sticky lg:top-4 h-fit bg-white p-4 border rounded order-first lg:order-last fixed left-0 bottom-0">
-        <h3 className="text-xl font-semibold">Order Summary</h3>
-        <div className="my-4 space-y-2">
-          <p className="flex justify-between">
+
+      <div className="w-full lg:sticky lg:top-4 h-fit bg-white p-4 border rounded-md shadow-md order-first lg:order-last fixed left-0 bottom-0 right-0">
+        <h3 className="text-md font-bold mb-2">Order Summary</h3>
+        <div className="divide-y mb-2">
+          <p className="flex justify-between text-sm py-2">
             <span>Items:</span>
             <span>
               {groupedItems.reduce((total, item) => total + item.quantity, 0)}
             </span>
           </p>
-          <p className="flex justify-between text-2xl font-bold border-t pt-2">
+          <p className="flex justify-between text-lg font-bold py-2">
             <span>Total:</span>
             <span>
               ${totalPrice.toFixed(2)}
@@ -165,18 +172,20 @@ const CartPage = () => {
           <Button
             onClick={handleCheckout}
             disabled={isLoading}
-            className="w-full"
+            className="w-full rounded-full"
           >
             {isLoading ? "Processing..." : "Checkout"}
           </Button>
         ): (
-          <Button className="w-full" asChild>
+          <Button
+            className="w-full rounded-full"
+            asChild
+          >
             <SignInButton mode="modal">
               Sign in to checkout
             </SignInButton>
           </Button>
         )
-        
         }
       </div>
     </div>
